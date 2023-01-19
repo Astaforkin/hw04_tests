@@ -9,4 +9,4 @@ class PostForm(ModelForm):
         labels = {'group': 'Группа', 'text': 'Текст поста'}
         help_texts = {'group': 'Выберите группу',
                       'text': 'Введите текст поста'}
-        fields = ['text', 'group']
+        fields = ('group', 'text', 'image')
