@@ -1,19 +1,29 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% block title %} 
   Записи сообщества {{ group.title }} 
 {% endblock title %} 
-{% block content %}  
-<div class="container py-5"> 
-  <h1>{{ group.title }}</h1> 
-  <p> 
-    {{ group.description }} 
-  </p> 
-  <article> 
+{% block content %}
+<div class="container py-5">
+<h1>Записи сообщества: {{ group.title }}</h1>
+<p>
+  {{ group.description }}
+</p>
     {% for post in page_obj %} 
-      {% include 'includes/posts_card.html' %}   
-      {% if not forloop.last %}<hr>{% endif %} 
-    {% endfor %} 
-  </article> 
-  <!-- под последним постом нет линии --> 
-</div>   
+    <article>
+      {% include 'includes/posts_card.html' %}
+        <a href="{% url 'posts:post_detail' post.pk %}">
+          подробная информация 
+        </a>
+    </article>
+        {% if post.group %}       
+          <a href="{% url 'posts:group_list' post.group.slug %}">
+            все записи группы
+          </a>
+        {% endif %}
+    {% if not forloop.last %}
+    <hr>
+    {% endif %}
+{% endfor %}
+{% include 'includes/paginator.html' %}
+  </div>  
 {% endblock content %}
