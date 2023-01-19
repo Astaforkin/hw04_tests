@@ -72,15 +72,17 @@ class PostsURLTests(TestCase):
         )
 
     def test_create_post_url_exists_at_desired_location(self):
-        ("""Проверяем доступность страницы создания поста """
-         """приложения Posts.""")
-        address = f'{"/create/"}'
+        """
+        Проверяем доступность страницы создания поста
+        приложения Posts.
+        """
+        address = '/create/'
         guest_response = self.guest_client.get(address, follow=True)
         authorized_response = self.authorized_client.get(address)
 
         self.assertRedirects(
             guest_response,
-            f'{"/auth/login/?next=/create/"}'
+            "/auth/login/?next=/create/"
         )
         self.assertEqual(authorized_response.reason_phrase, 'OK')
 

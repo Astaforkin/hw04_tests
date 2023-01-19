@@ -68,23 +68,25 @@ class PostFormTests(TestCase):
             data=form_data,
             follow=True
         )
-        old_group_response = self.authorized_client.get(
-            reverse('posts:group_list', args=(self.group.slug,))
-        )
-        new_group_response = self.authorized_client.get(
-            reverse('posts:group_list', args=(self.group_other.slug,))
-        )
+        # old_group_response = self.authorized_client.get(
+        #     reverse('posts:group_list', args=(self.group.slug,))
+        # )
+        # new_group_response = self.authorized_client.get(
+        #     reverse('posts:group_list', args=(self.group_other.slug,))
+        # )
         post = Post.objects.last()
         self.assertEqual(post.text, form_data['text'])
         self.assertEqual(post.author, self.post_author)
         self.assertEqual(post.group_id, form_data['group'])
-        self.assertTrue(
-            old_group_response.context['page_obj'].paginator.count == 0
-        )
-        self.assertTrue(
-            new_group_response.context['page_obj'].paginator.count == 1
-        )
+        # self.assertTrue(
+        #     old_group_response.context['page_obj'].paginator.count == 0
+        # )
+        # self.assertTrue(
+        #     new_group_response.context['page_obj'].paginator.count == 1
+        # )
         self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertEqual(self.group.posts.count(), 0)
+        self.assertEqual(self.group_other.posts.count(), 1)
 
     def test_not_authorized_user_create_post(self):
         """Проверка создания записи не авторизированным пользователем."""
