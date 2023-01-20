@@ -2,20 +2,28 @@
 {% block title %} 
   Последние обновления на сайте 
 {% endblock title %} 
-{% block content %}  
+{% block content %}
+{% load cache %}  
 <div class="container py-5">      
   <h1>Последние обновления на сайте</h1> 
   <article> 
+  {% cache 20 index_page with page_obj %}
   {% for post in page_obj %} 
-    {% include 'includes/posts_card.html' %} 
+    {% include 'includes/posts_card.html' %}
+    <a href="{% url 'posts:post_detail' post.pk %}">
+          подробная информация 
+    </a>
+  </article>
+  <article>  
   {% if post.group %} 
     <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a> 
   {% endif %} 
+  </article> 
   {% if not forloop.last %} 
     <hr> 
   {% endif %} 
   {% endfor %}
+   {% endcache %}
   {% include 'includes/paginator.html' %}
-  </article>  
-</div> 
+</div>
 {% endblock content %}
