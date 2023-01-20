@@ -3,8 +3,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Group, User
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm, CommentForm
+from django.views.decorators.cache import cache_page
 
 
+@cache_page(20)
 def index(request):
     posts = Post.objects.select_related('author', 'group')
     page_obj = get_paginator(posts, request)

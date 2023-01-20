@@ -2,10 +2,12 @@
 {% block title %} 
   Последние обновления на сайте 
 {% endblock title %} 
-{% block content %}  
+{% block content %}
+{% load cache %}  
 <div class="container py-5">      
   <h1>Последние обновления на сайте</h1> 
   <article> 
+  {% cache 20 index_page with page_obj %}
   {% for post in page_obj %} 
     {% include 'includes/posts_card.html' %}
     <a href="{% url 'posts:post_detail' post.pk %}">
@@ -21,6 +23,7 @@
     <hr> 
   {% endif %} 
   {% endfor %}
+   {% endcache %}
   {% include 'includes/paginator.html' %}
 </div>
 {% endblock content %}
